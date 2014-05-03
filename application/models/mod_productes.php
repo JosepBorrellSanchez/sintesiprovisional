@@ -18,11 +18,12 @@ class mod_productes extends CI_Model{
 	
 	
 	
-	function insertProducte($fullname, $price, $categoria){
+	function insertProducte($fullname, $price, $categoria, $descripcio, $url){
 		
 		//array del producte (inserto producte)
         $data = array(
-        'post_title'=> $_POST['fullname'],
+        'post_title'=> $fullname,
+        'post_name'=> $url,
         'post_type'=> 'al_product');
         $this->db->insert('wp_posts', $data);
         $idproducte = $this->db->insert_id(); //agafo la id del producte que acabo de insertar
@@ -34,22 +35,31 @@ class mod_productes extends CI_Model{
         'meta_value'=> $_POST['price']);
         $this->db->insert('wp_postmeta', $insertarpreu);
         
+        //array de la descripcio del producte (inserto descripcio)
+        $insertardescripcio = array(
+        'post_id' => $idproducte,
+        'meta_key'=> '_desc',
+        'meta_value'=> $descripcio);
+        $this->db->insert('wp_postmeta', $insertardescripcio);
+        
         //inserto el producte a la categoria
-        /*
-        $this->db->select('term_taxonomy_id');
-		$this->db->from('wp_terms AS A');
-		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
-		$this->db->where('B.taxonomy = "al_product-cat"');
-		$this->db->where('A.name ="bolleria"');
-		$categoria = $this->db->get()->term_taxonomy_id;*/
-		$query = $this->db->query('SELECT term_taxonomy_id FROM wp_terms AS A join wp_term_taxonomy AS B ON A.term_id = B.term_id where B.taxonomy = "al_product-cat" AND A.name ='.$_POST["categoria"]);
-		foreach ($query->result() as $row)
-		$categoria = $row->term_taxonomy_id;
-
         $insertcategoria = array(
         'object_id'=> $idproducte,
         'term_taxonomy_id'=> $categoria);
         $this->db->insert('wp_term_relationships', $insertcategoria);
+        
+        //miro quans productes hi ha per mostraru despues
+        
+        $this->db->select('count(*)');
+        $this->db->from('wp_term_relationships');
+        $this->db->where('term_taxonomy_id',$categoria);
+        $count = array(
+        'count'=>$this->db->get()->row('count(*)'));
+        
+            
+		$this->db->where('term_taxonomy_id', $categoria);
+        $this->db->update('wp_term_taxonomy', $count);
+        
         
         
         return ($this->db->affected_rows() > 0) ? false : true; //si ha afectat a algun registre ha funcionat, sino no.

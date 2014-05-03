@@ -9,10 +9,10 @@ class Categories extends CI_Controller {
     }
 // fer un vector i recorrel en lo for each, ha de portar 
 // l'objecte persona 
-	public function listusers()
+	public function llistar()
 	{	
 			
-		$users ['query'] = $this->users->getProducte();
+		$users ['query'] = $this->mod_categories->getCategoria();
 		$this->load->view('list', $users);
 	}
 
@@ -22,8 +22,9 @@ class Categories extends CI_Controller {
 		$this->load->view('afegircategoria'); 
                 $name = $this->input->post('name');
                 $slug = $this->input->post('slug');
+                $descripcio = $this->input->post('descripcio');
                 if($name != null)
-                $this->mod_categories->insertCategoria($name, $slug);
+                $this->mod_categories->insertCategoria($name, $slug, $descripcio);
 }
 	public function modificar()
 	{

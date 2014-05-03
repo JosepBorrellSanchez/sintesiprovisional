@@ -1,37 +1,75 @@
 <html>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<head>
 		<title>Agregar productes</title>
 		<?php include("capçalera.php"); ?>
 	</head>
 	<body>
-<h1>Inserta un nou producte</h1>
-<form method="post">
-          <table border = "0">
-            <tr>
-             <td>Nom:</td>
-              <td><input type="text" name="fullname"></td>
-            </tr>
-            <tr>
-            <td>Preu en euros: </td>
-              <td><input type="number" min="0" name="price"></td>
-            </tr>
-            <tr>
-				<select>
-				<?php foreach($query->result() as $index) {?> 
-				<option value="" name="categoria"><?php echo $index -> name; ?></option>
-			<?php  } ?> 
-			</select>
-            </tr>
-            <tr>
-             <td><input type="Submit" value="Enviar"></td>
-             <td><input type="Reset" value="Cancelar"></td>
-            </tr> 
-            <tr>
-            
-			</tr>
-         </table>
-         
-        </form>
+
+<form class="form-horizontal" method="post">
+<fieldset>
+
+<!-- Form Name -->
+<legend><h1>Inserta un nou producte</h1></legend>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="fullname">Nom del producte</label>
+  <div class="controls">
+    <input id="fullname" name="fullname" placeholder="Ex : napolitana" class="input-xlarge" required="" type="text">
+    
+  </div>
+</div>
+
+<!-- Textarea -->
+<div class="control-group">
+  <label class="control-label" for="descripcio">Descripció</label>
+  <div class="controls">                     
+    <textarea id="descripcio" name="descripcio"></textarea>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="price">Preu</label>
+  <div class="controls">
+    <input id="price" name="price" placeholder="Ex : 5.5" class="input-medium" type="text">
+    
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group">
+  <label class="control-label" for="categoria">Categoria del producte</label>
+  <div class="controls">
+    <select id="categoria" name="categoria" class="input-xlarge">
+      <?php foreach($query->result() as $index) {?> 
+				<option value="<?php echo $index -> term_taxonomy_id; ?>"name="categoria"><?php echo $index -> name; ?></option>
+			<?php  } ?>
+    </select>
+  </div>
+</div>
+
+<!-- File Button --> 
+<div class="control-group">
+  <label class="control-label" for="foto">Imatge</label>
+  <div class="controls">
+    <input id="foto" name="foto" class="input-file" type="file">
+  </div>
+</div>
+
+<!-- Button (Double) -->
+<div class="control-group">
+  <label class="control-label" for="button1id"></label>
+  <div class="controls">
+    <button id="button1id" name="button1id" class="btn btn-success" type="Submit">Insertar</button>
+    <button id="button2id" name="button2id" class="btn btn-danger" type="Reset">Cancelar</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
 </body>
 </html>
 

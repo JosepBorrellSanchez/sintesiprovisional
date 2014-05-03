@@ -34,18 +34,21 @@ LIMIT 0 , 30
 	}
 	
 	
-	function insertCategoria($name, $slug){
+	function insertCategoria($name, $slug, $descripcio){
+		//inserto la categoria (wp-terms)
         $data = array(
-        'name'=> $_POST['name'],
-        'slug'=> $_POST['slug']);
-        
+        'name'=> $name,
+        'slug'=> $slug);
         $this->db->insert('wp_terms', $data);
+        
+        //inserto la descripcio i la taxonomia (wp_term_taxonomy)
         $iddelatre = $this->db->insert_id();
         $algo = array(
         'term_id' => $iddelatre,
-        'taxonomy'=> 'al_product-cat');
+        'taxonomy'=> 'al_product-cat',
+        'description'=>$descripcio);
         $this->db->insert('wp_term_taxonomy', $algo);
-        return true;
+        return ($this->db->affected_rows() > 0) ? false : true; //si ha afectat a algun registre ha funcionat, sino no.
 	}
 	
 	
