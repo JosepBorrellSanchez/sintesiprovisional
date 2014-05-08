@@ -11,7 +11,30 @@ class mod_productes extends CI_Model{
     
     function getProducte(){
 		
-		$query=$this->db->get('wp_posts');
+		/*
+		 * SELECT a.ID, a.post_title AS nom, b.meta_value AS descripcio, c.meta_value AS preu, a.post_name AS link
+FROM wp_posts a, wp_postmeta b
+JOIN wp_postmeta c ON c.post_id = b.post_id
+WHERE a.post_type = "al_product"
+AND c.meta_key = "_price"
+AND b.meta_key = "_desc"
+AND b.post_id = a.ID
+LIMIT 0 , 30
+* */
+
+		$this->db->select('a.ID');
+		$this->db->select('a.post_title as nom');
+		$this->db->select('b.meta_value as descripcio');
+		$this->db->select('c.meta_value as preu');
+		$this->db->select('a.post_name as link');
+		$this->db->from('wp_posts AS a');
+		$this->db->from('wp_postmeta AS b');
+		$this->db->join('wp_postmeta AS c', 'c.post_id = b.post_id');
+		$this->db->where('a.post_type = "al_product"');
+		$this->db->where('c.meta_key', '_price');
+		$this->db->where('b.meta_key','_desc');
+		$this->db->where('b.post_id = `a`.`ID`');
+		$query=$this->db->get();
 		
 		return $query;
 	}
@@ -49,7 +72,6 @@ class mod_productes extends CI_Model{
         $this->db->insert('wp_term_relationships', $insertcategoria);
         
         //miro quans productes hi ha per mostraru despues
-        
         $this->db->select('count(*)');
         $this->db->from('wp_term_relationships');
         $this->db->where('term_taxonomy_id',$categoria);
@@ -67,9 +89,12 @@ class mod_productes extends CI_Model{
 	}
 	
 	
-	function deleteProducte($actor_id)
+	function borrar($ID)
     {
-       $this->db->delete('producte', array('id_producte' => $ID));
+       $this->db->delete('wp_posts', array('ID' => $ID));
+       $this->db->delete('wp_postmeta', array('post_id' => $ID));
+       $this->db->delete('wp_term_relationships', array('object_id' => $ID));
+       
      
     }
 }

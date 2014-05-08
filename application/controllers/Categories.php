@@ -26,15 +26,25 @@ class Categories extends CI_Controller {
                 if($name != null)
                 $this->mod_categories->insertCategoria($name, $slug, $descripcio);
 }
+
+	function json()
+    {
+        $data['json'] = $this->mod_categories->getCategories();
+        if (!$data['json']) show_404();
+
+        $this->load->view('json_view', $data);
+    }
+    
 	public function modificar()
 	{
 		
 		$this->load->view('modificar'); 
 }
-	public function eliminar($ID)
+	public function borrar($ID)
 	{
-                $this->users->deleteProducte($ID);
-                $this->load->view('eliminar'); 
+                $this->mod_categories->borrar($ID);
+                //com actualitzo la taula?
+                $this->load->view('list'); 
 }
 
 	public function grocery()
