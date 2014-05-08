@@ -81,6 +81,18 @@ LIMIT 0 , 30
        
      
     }
+    function modificar($ID)
+    {
+		
+		$data = array('name' => $nom,
+					  'slug' => $slug);
+		$this->db->where('term_id');
+		$this->db->update('wp_terms', array('name' => $nom, 'slug' => $slug);
+		
+		
+		
+	}
+    
 }
 
 ?>
