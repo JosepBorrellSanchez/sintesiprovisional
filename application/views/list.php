@@ -75,11 +75,14 @@ new FixedColumns( oTable );
 		<table class="table-striped" id="25" border="1" bordercolor="#000000" width="100%" cellpadding="3" cellspacing="3">
 		<thead>
 		<tr>
-			<th width="7%"><b>ID</b></th>
-			<th width="30%"><b>Nom</b></th>
-			<th width="30%"><b>Descripcio</b></th>
-			<th width="14%"><b>Productes</b></th>
-			<th width="16%"><b>Accions</b></th>
+			
+				<th width="6%"><b>ID</b></th>
+				<th width="25%"><b>Nom</b></th>
+				<th width="25%"><b>Descripcio</b></th>
+				<th width="10%"><b>Productes</b></th>
+				<th width="14%"><b>Link</b></th>
+				<th width="20%"><b>Accions</b></th>
+				
 		</tr>
 		</thead>
 		<tbody>
@@ -88,6 +91,7 @@ new FixedColumns( oTable );
 			<td> <?php echo $index -> name; ?></td>
 			<td> <?php echo $index -> description; ?></td>
 			<td> <?php echo $index -> count; ?></td>
+			<td> <a href='http://josepborrellweb.esy.es/wordpress/product-category/<?php echo $index -> slug; ?>'>Link al producte</td>
 			<td>
 				<a href='modificar/<?php echo $index->term_id;?>'><button class="btn btn-primary" type="button">Modificar</button></a>
 				<a href='borrar/<?php echo $index->term_id; ?>'><button class="btn btn-danger" type="button">Eliminar</button></a></td>

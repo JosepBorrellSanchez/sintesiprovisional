@@ -18,13 +18,46 @@ class Categories extends CI_Controller {
 
 	public function crear()
 	{
+		function urls_amigables($url) {
+
+// Tranformamos todo a minusculas
+
+$url = strtolower($url);
+
+//Rememplazamos caracteres especiales latinos
+
+$find = array('á', 'é', 'í', 'ó', 'ú', 'ñ');
+
+$repl = array('a', 'e', 'i', 'o', 'u', 'n');
+
+$url = str_replace ($find, $repl, $url);
+
+// Añaadimos los guiones
+
+$find = array(' ', '&', '\r\n', '\n', '+'); 
+$url = str_replace ($find, '-', $url);
+
+// Eliminamos y Reemplazamos demás caracteres especiales
+
+$find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+
+$repl = array('', '-', '');
+
+$url = preg_replace ($find, $repl, $url);
+
+return $url;
+
+}
+		
 		
 		$this->load->view('afegircategoria'); 
                 $name = $this->input->post('name');
-                $slug = $this->input->post('slug');
+                $url = $name;
+                //$slug = $this->input->post('slug');
                 $descripcio = $this->input->post('descripcio');
+                $url = urls_amigables($url);
                 if($name != null)
-                $this->mod_categories->insertCategoria($name, $slug, $descripcio);
+                $this->mod_categories->insertCategoria($name, $url, $descripcio);
 }
 
 	function json()
@@ -35,10 +68,47 @@ class Categories extends CI_Controller {
         $this->load->view('json_view', $data);
     }
     
-	public function modificar()
+	public function modificar($term_id)
 	{
+		function urls_amigables($url) {
+
+// Tranformamos todo a minusculas
+
+$url = strtolower($url);
+
+//Rememplazamos caracteres especiales latinos
+
+$find = array('á', 'é', 'í', 'ó', 'ú', 'ñ');
+
+$repl = array('a', 'e', 'i', 'o', 'u', 'n');
+
+$url = str_replace ($find, $repl, $url);
+
+// Añaadimos los guiones
+
+$find = array(' ', '&', '\r\n', '\n', '+'); 
+$url = str_replace ($find, '-', $url);
+
+// Eliminamos y Reemplazamos demás caracteres especiales
+
+$find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+
+$repl = array('', '-', '');
+
+$url = preg_replace ($find, $repl, $url);
+
+return $url;
+
+}
 		
-		$this->load->view('modificar'); 
+		$this->load->view('modificarcategoria'); 
+		$name = $this->input->post('name');
+                $url = $name;
+                //$slug = $this->input->post('slug');
+                $descripcio = $this->input->post('descripcio');
+                $url = urls_amigables($url);
+                if($name != null)
+                $this->mod_categories->modificar($term_id, $name, $url, $descripcio);
 }
 	public function borrar($ID)
 	{

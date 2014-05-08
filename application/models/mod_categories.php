@@ -51,11 +51,11 @@ LIMIT 0 , 30
 	}
 	
 	
-	function insertCategoria($name, $slug, $descripcio){
+	function insertCategoria($name, $url, $descripcio){
 		//inserto la categoria (wp-terms)
         $data = array(
         'name'=> $name,
-        'slug'=> $slug);
+        'slug'=> $url);
         $this->db->insert('wp_terms', $data);
         
         //inserto la descripcio i la taxonomia (wp_term_taxonomy)
@@ -81,13 +81,19 @@ LIMIT 0 , 30
        
      
     }
-    function modificar($ID)
+    function modificar($term_id, $name, $url, $descripcio)
     {
 		
-		$data = array('name' => $nom,
-					  'slug' => $slug);
-		$this->db->where('term_id');
-		$this->db->update('wp_terms', array('name' => $nom, 'slug' => $slug);
+		$data = array('name' => $name,
+					  'slug' => $url);
+		$this->db->where('term_id',$term_id);
+		$this->db->update('wp_terms', $data);
+		
+		
+		$algo = array(
+        'description'=>$descripcio);
+        $this->db->where('term_id',$term_id);
+        $this->db->update('wp_term_taxonomy', $algo);
 		
 		
 		
