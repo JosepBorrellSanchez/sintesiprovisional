@@ -55,7 +55,7 @@ LIMIT 0 , 30
         $insertarpreu = array(
         'post_id' => $idproducte,
         'meta_key'=> '_price',
-        'meta_value'=> $_POST['price']);
+        'meta_value'=> $price);
         $this->db->insert('wp_postmeta', $insertarpreu);
         
         //array de la descripcio del producte (inserto descripcio)
@@ -97,6 +97,50 @@ LIMIT 0 , 30
        
      
     }
+    
+    function modificar($ID, $fullname, $price, $categoria, $descripcio, $url)
+    {
+				
+		//array del producte (modifico producte)
+        $data = array(
+        'post_title'=> $fullname,
+        'post_name'=> $url);
+        $this->db->where('ID',$ID);
+        $this->db->update('wp_posts', $data);
+        
+        //array del preu del producte (modifico preu)
+        $modpreu = array(
+        'meta_value'=> $price);
+        $this->db->where('post_id',$ID);
+        $this->db->where('meta_key','_price');
+        $this->db->update('wp_postmeta', $modpreu);
+        
+        //array de la descripcio del producte (modifico descripcio)
+        $moddescripcio = array(
+        'meta_value'=> $descripcio);
+        $this->db->where('post_id',$ID);
+        $this->db->where('meta_key','_desc');
+        $this->db->update('wp_postmeta', $moddescripcio);
+		
+		//modifico la categoria
+        $insertcategoria = array(
+        'term_taxonomy_id'=> $categoria);
+        $this->db->where('object_id',$ID);
+        $this->db->update('wp_term_relationships', $insertcategoria);
+				
+		//miro quans productes hi ha per mostraru despues
+        $this->db->select('count(*)');
+        $this->db->from('wp_term_relationships');
+        $this->db->where('term_taxonomy_id',$categoria);
+        $count = array(
+        'count'=>$this->db->get()->row('count(*)'));
+        
+            
+		$this->db->where('term_taxonomy_id', $categoria);
+        $this->db->update('wp_term_taxonomy', $count);
+		
+		
+	}
 }
 
 ?>

@@ -27,34 +27,20 @@ class Productes extends CI_Controller {
 	public function crear()
 	{
 		function urls_amigables($url) {
-
-// Tranformamos todo a minusculas
-
-$url = strtolower($url);
-
-//Rememplazamos caracteres especiales latinos
-
-$find = array('á', 'é', 'í', 'ó', 'ú', 'ñ');
-
-$repl = array('a', 'e', 'i', 'o', 'u', 'n');
-
-$url = str_replace ($find, $repl, $url);
-
-// Añaadimos los guiones
-
-$find = array(' ', '&', '\r\n', '\n', '+'); 
-$url = str_replace ($find, '-', $url);
-
-// Eliminamos y Reemplazamos demás caracteres especiales
-
-$find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
-
-$repl = array('', '-', '');
-
-$url = preg_replace ($find, $repl, $url);
-
-return $url;
-
+			// Tranformamos todo a minusculas
+			$url = strtolower($url);
+			//Rememplazamos caracteres especiales latinos
+			$find = array('á', 'é', 'í', 'ó', 'ú', 'à', 'è', 'ì', 'ò', 'ù', 'ñ');
+			$repl = array('a', 'e', 'i', 'o', 'u', 'a', 'e', 'i', 'o', 'u', 'n');
+			$url = str_replace ($find, $repl, $url);
+			// Añaadimos los guiones
+			$find = array(' ', '&', '\r\n', '\n', '+'); 
+			$url = str_replace ($find, '-', $url);
+			// Eliminamos y Reemplazamos demás caracteres especiales
+			$find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+			$repl = array('', '-', '');
+			$url = preg_replace ($find, $repl, $url);
+			return $url;
 }
 
 		$users ['query'] = $this->mod_categories->getCategoria();
@@ -73,10 +59,36 @@ return $url;
                 
                 
 }
-	public function modificar()
+	public function modificar($ID)
 	{
-		
-		$this->load->view('modificar'); 
+		function urls_amigables($url) {
+			// Tranformamos todo a minusculas
+			$url = strtolower($url);
+			//Rememplazamos caracteres especiales latinos
+			$find = array('á', 'é', 'í', 'ó', 'ú', 'à', 'è', 'ì', 'ò', 'ù', 'ñ');
+			$repl = array('a', 'e', 'i', 'o', 'u', 'a', 'e', 'i', 'o', 'u', 'n');
+			$url = str_replace ($find, $repl, $url);
+			// Añaadimos los guiones
+			$find = array(' ', '&', '\r\n', '\n', '+'); 
+			$url = str_replace ($find, '-', $url);
+			// Eliminamos y Reemplazamos demás caracteres especiales
+			$find = array('/[^a-z0-9\-<>]/', '/[\-]+/', '/<[^>]*>/');
+			$repl = array('', '-', '');
+			$url = preg_replace ($find, $repl, $url);
+			return $url;
+}
+		$users ['query'] = $this->mod_categories->getCategoria();
+		$this->load->view('modificarproductes', $users); 
+				$fullname = $this->input->post('fullname');
+                $price = $this->input->post('price');
+                $categoria = $this->input->post('categoria');
+                $descripcio = $this->input->post('descripcio');
+                //$count = $users->count;
+                if($fullname != null && $price != null){
+                $url = $fullname;
+                $url = urls_amigables($url);
+                $this->mod_productes->modificar($ID, $fullname, $price, $categoria, $descripcio, $url);
+			}
 }
 	public function borrar($ID)
 	{

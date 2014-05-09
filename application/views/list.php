@@ -70,7 +70,7 @@ new FixedColumns( oTable );
 
 	</head>
 	<body>
-		<p>Aquesta es la taula d'usuaris</p>
+		<p>Aquesta es la taula de categories</p>
 		<a href="crear"><button class="btn btn-success" type="button">Crear categoria</button></a>
 		<table class="table-striped" id="25" border="1" bordercolor="#000000" width="100%" cellpadding="3" cellspacing="3">
 		<thead>
@@ -91,7 +91,7 @@ new FixedColumns( oTable );
 			<td> <?php echo $index -> name; ?></td>
 			<td> <?php echo $index -> description; ?></td>
 			<td> <?php echo $index -> count; ?></td>
-			<td> <a href='http://josepborrellweb.esy.es/wordpress/product-category/<?php echo $index -> slug; ?>'>Link al producte</td>
+			<td> <a href='http://josepborrellweb.esy.es/wordpress/product-category/<?php echo $index -> slug; ?>'>Link a la categoria</td>
 			<td>
 				<a href='modificar/<?php echo $index->term_id;?>'><button class="btn btn-primary" type="button">Modificar</button></a>
 				<a href='borrar/<?php echo $index->term_id; ?>'><button class="btn btn-danger" type="button">Eliminar</button></a></td>
