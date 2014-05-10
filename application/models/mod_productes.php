@@ -71,6 +71,7 @@ LIMIT 0 , 30
         'term_taxonomy_id'=> $categoria);
         $this->db->insert('wp_term_relationships', $insertcategoria);
         
+        /*
         //miro quans productes hi ha per mostraru despues
         $this->db->select('count(*)');
         $this->db->from('wp_term_relationships');
@@ -81,7 +82,7 @@ LIMIT 0 , 30
             
 		$this->db->where('term_taxonomy_id', $categoria);
         $this->db->update('wp_term_taxonomy', $count);
-        
+        */
         
         
         return ($this->db->affected_rows() > 0) ? false : true; //si ha afectat a algun registre ha funcionat, sino no.

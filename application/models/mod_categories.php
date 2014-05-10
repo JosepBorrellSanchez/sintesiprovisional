@@ -17,15 +17,14 @@ class mod_Categories extends CI_Model{
 	}
 	
 	function getCategoria(){
-		$this->db->select('A.term_id');
+		$this->db->select('term_taxonomy_id');
 		$this->db->from('wp_terms AS A');
 		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
 		$this->db->where('B.taxonomy = "al_product-cat"');
 		$query = $this->db->get();
 		
 		//fer un array en los ID de categoria per a despues recorrel i actualitzar los counts..
-		$array = array($query->row()->term_id);
-		foreach ($array as &$categoria) {
+		foreach ($query->row() as $categoria) {
         $this->db->select('count(*)');
         $this->db->from('wp_term_relationships');
         $this->db->where('term_taxonomy_id',$categoria);
@@ -79,6 +78,27 @@ LIMIT 0 , 30
 
 		return $query->result();
 	}
+	
+	function getCategoriesjson(){
+		$this->db->select('A.term_id');
+		$this->db->select('name');
+		$this->db->select('slug');
+		$this->db->select('description');
+		$this->db->from('wp_terms AS A');
+		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
+		$this->db->where('B.taxonomy = "al_product-cat"');
+		$query = $this->db->get();
+		/* SELECT name
+FROM `wp_terms` AS a
+JOIN `wp_term_taxonomy` AS b
+WHERE b.taxonomy = 'al_product-cat'
+AND a.term_id = b.term_id
+LIMIT 0 , 30
+* */
+
+		return $query->result();
+	}
+	
 	
 	
 	function insertCategoria($name, $url, $descripcio){
