@@ -88,13 +88,6 @@ LIMIT 0 , 30
 		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
 		$this->db->where('B.taxonomy = "al_product-cat"');
 		$query = $this->db->get();
-		/* SELECT name
-FROM `wp_terms` AS a
-JOIN `wp_term_taxonomy` AS b
-WHERE b.taxonomy = 'al_product-cat'
-AND a.term_id = b.term_id
-LIMIT 0 , 30
-* */
 
 		return $query->result();
 	}

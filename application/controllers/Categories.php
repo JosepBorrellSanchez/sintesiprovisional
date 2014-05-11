@@ -50,8 +50,7 @@ class Categories extends CI_Controller {
     {
         $data['json'] = $this->mod_categories->getCategoriesjson();
         if (!$data['json']) show_404();
-
-        $this->load->view('json_view', $data);
+        $this->load->view('json_view2', $data);
     }
     
 	public function modificar($term_id)

@@ -39,6 +39,25 @@ LIMIT 0 , 30
 		return $query;
 	}
 	
+	function getProductejson(){
+		
+		$this->db->select('a.ID');
+		$this->db->select('a.post_title as nom');
+		$this->db->select('b.meta_value as descripcio');
+		$this->db->select('c.meta_value as preu');
+		$this->db->select('a.post_name as link');
+		$this->db->from('wp_posts AS a');
+		$this->db->from('wp_postmeta AS b');
+		$this->db->join('wp_postmeta AS c', 'c.post_id = b.post_id');
+		$this->db->where('a.post_type = "al_product"');
+		$this->db->where('c.meta_key', '_price');
+		$this->db->where('b.meta_key','_desc');
+		$this->db->where('b.post_id = `a`.`ID`');
+		$query=$this->db->get();
+		
+		return $query->result();
+	}
+	
 	
 	
 	function insertProducte($fullname, $price, $categoria, $descripcio, $url){

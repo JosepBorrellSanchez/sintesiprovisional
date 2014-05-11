@@ -102,6 +102,13 @@ class Productes extends CI_Controller {
 	{
 		$this->load->view('example');
 }
+
+function json()
+    {
+        $data['json'] = $this->mod_productes->getProductejson();
+        if (!$data['json']) show_404();
+        $this->load->view('json_view', $data);
+    }
 }
 
 /* End of file welcome.php */
