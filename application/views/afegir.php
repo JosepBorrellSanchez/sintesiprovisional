@@ -25,7 +25,7 @@
 <div class="control-group">
   <label class="control-label" for="descripcio">Descripció</label>
   <div class="controls">                     
-    <textarea id="descripcio" name="descripcio"></textarea>
+    <textarea id="descripcio" name="descripcio" required=""></textarea>
   </div>
 </div>
 
@@ -33,8 +33,8 @@
 <div class="control-group">
   <label class="control-label" for="price">Preu</label>
   <div class="controls">
-    <input id="price" name="price" placeholder="Ex : 5.5" class="input-medium" type="text">
-    
+	<input type="number" id="price" name="price" placeholder="Ex : 5.5" required="">
+   
   </div>
 </div>
 

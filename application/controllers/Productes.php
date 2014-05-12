@@ -52,7 +52,7 @@ class Productes extends CI_Controller {
                 $categoria = $this->input->post('categoria');
                 $descripcio = $this->input->post('descripcio');
                 //$count = $users->count;
-                if($fullname != null && $price != null){
+                if($fullname != null && $descripcio != null &&$price != null ){
                 $url = $fullname;
                 $url = urls_amigables($url);
                 $this->mod_productes->insertProducte($fullname, $price, $categoria, $descripcio, $url);}
@@ -109,6 +109,11 @@ function json()
         if (!$data['json']) show_404();
         $this->load->view('json_view', $data);
     }
+    function test()
+    {
+       $this->load->view('provaxd');
+    }
+    
 }
 
 /* End of file welcome.php */
