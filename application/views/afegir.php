@@ -50,13 +50,13 @@
   </div>
 </div>
 
-<!-- File Button --> 
+<!-- File Button 
 <div class="control-group">
   <label class="control-label" for="foto">Imatge</label>
   <div class="controls">
     <input id="foto" name="foto" class="input-file" type="file">
   </div>
-</div>
+</div>--> 
 
 <!-- Button (Double) -->
 <div class="control-group">

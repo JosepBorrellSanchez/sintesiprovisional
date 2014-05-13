@@ -7,7 +7,6 @@ class Productes extends CI_Controller {
         
         $this->load->model('mod_categories');
         $this->load->model('mod_productes');
-        $this->load->helper('url');
     }
 // fer un vector i recorrel en lo for each, ha de portar 
 // l'objecte persona 
@@ -23,6 +22,8 @@ class Productes extends CI_Controller {
 		$users ['query'] = $this->mod_categories->getCategoria();
 		$this->load->view('list', $users);
 	}
+	
+	
 
 	public function crear()
 	{
@@ -56,9 +57,39 @@ class Productes extends CI_Controller {
                 $url = $fullname;
                 $url = urls_amigables($url);
                 $this->mod_productes->insertProducte($fullname, $price, $categoria, $descripcio, $url);}
-                
-                
+              
 }
+
+public function upload() {
+		 $data['content'] = 'penjafoto';
+		  $this->load->vars($data);
+		  $this->load->view('penjafoto'); }
+
+public function DoUpload() {
+
+$config_file = array ( 'upload_path' => './imatges/',
+ 'allowed_types' => 'png|jpg',
+  'overwrite' => false,
+   'max_size' => 0,
+    'max_width' => 0,
+     'max_height' => 0,
+      'encrypt_name' => false,
+       'remove_spaces' => true, );
+       
+ $this->upload->initialize($config_file);
+  if (!$this->upload->do_upload('cipote')) {
+	   $error = $this->upload->display_errors();
+	    //$nomfitxer = 'file_name';
+	    echo $error; } 
+	    else { 
+			$this->session->set_flashdata('success_upload','Pujat Correcament');
+			$nom = $this->upload->file_name;
+			$file_name = $this->upload->file_name;
+			$this->mod_productes->pujarFoto($nom, $file_name);
+			redirect('Productes/llistar'); }
+			}
+
+			
 	public function modificar($ID)
 	{
 		function urls_amigables($url) {

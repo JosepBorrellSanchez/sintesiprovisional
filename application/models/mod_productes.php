@@ -57,9 +57,7 @@ LIMIT 0 , 30
 		
 		return $query->result();
 	}
-	
-	
-	
+		
 	function insertProducte($fullname, $price, $categoria, $descripcio, $url){
 		
 		//array del producte (inserto producte)
@@ -90,6 +88,28 @@ LIMIT 0 , 30
         'term_taxonomy_id'=> $categoria);
         $this->db->insert('wp_term_relationships', $insertcategoria);
         
+        $this->db->select('term_taxonomy_id');
+		$this->db->from('wp_terms AS A');
+		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
+		$this->db->where('B.taxonomy = "al_product-cat"');
+		$query = $this->db->get();
+		
+		//fer un array en los ID de categoria per a despues recorrel i actualitzar los counts..
+		foreach ($query->row() as $categoria) {
+			$this->db->select('count(*)');
+			$this->db->from('wp_term_relationships');
+			$this->db->where('term_taxonomy_id',$categoria);
+			
+			
+			$count = array(
+				'count'=>$this->db->get()->row('count(*)'));
+				
+				
+				$this->db->where('term_taxonomy_id', $categoria);
+				$this->db->update('wp_term_taxonomy', $count);
+		}
+		
+        
         /*
         //miro quans productes hi ha per mostraru despues
         $this->db->select('count(*)');
@@ -108,6 +128,15 @@ LIMIT 0 , 30
         
 	}
 	
+	function pujarFoto($nom, $file_name) {
+		 $data = array('post_title'=> $nom,
+		  'post_name'=> $file_name,
+		  'post_parent'=> 200,
+		  'post_type'=> 'attachment');
+		   $this->db->insert('wp_posts', $data); 
+		   }
+	
+	
 	
 	function borrar($ID)
     {
@@ -115,7 +144,28 @@ LIMIT 0 , 30
        $this->db->delete('wp_postmeta', array('post_id' => $ID));
        $this->db->delete('wp_term_relationships', array('object_id' => $ID));
        
-     
+       //arreglo els counts       
+        $this->db->select('term_taxonomy_id');
+		$this->db->from('wp_terms AS A');
+		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
+		$this->db->where('B.taxonomy = "al_product-cat"');
+		$query = $this->db->get();
+		
+		//fer un array en los ID de categoria per a despues recorrel i actualitzar los counts..
+		foreach ($query->row() as $categoria) {
+			$this->db->select('count(*)');
+			$this->db->from('wp_term_relationships');
+			$this->db->where('term_taxonomy_id',$categoria);
+			
+			
+			$count = array(
+				'count'=>$this->db->get()->row('count(*)'));
+				
+				
+				$this->db->where('term_taxonomy_id', $categoria);
+				$this->db->update('wp_term_taxonomy', $count);
+		}
+
     }
     
     function modificar($ID, $fullname, $price, $categoria, $descripcio, $url)
@@ -147,17 +197,27 @@ LIMIT 0 , 30
         'term_taxonomy_id'=> $categoria);
         $this->db->where('object_id',$ID);
         $this->db->update('wp_term_relationships', $insertcategoria);
+				//arreglo els counts       
+        $this->db->select('term_taxonomy_id');
+		$this->db->from('wp_terms AS A');
+		$this->db->join('wp_term_taxonomy AS B', 'A.term_id = B.term_id');
+		$this->db->where('B.taxonomy = "al_product-cat"');
+		$query = $this->db->get();
+		
+		//fer un array en los ID de categoria per a despues recorrel i actualitzar los counts..
+		foreach ($query->row() as $categoria) {
+			$this->db->select('count(*)');
+			$this->db->from('wp_term_relationships');
+			$this->db->where('term_taxonomy_id',$categoria);
+			
+			
+			$count = array(
+				'count'=>$this->db->get()->row('count(*)'));
 				
-		//miro quans productes hi ha per mostraru despues
-        $this->db->select('count(*)');
-        $this->db->from('wp_term_relationships');
-        $this->db->where('term_taxonomy_id',$categoria);
-        $count = array(
-        'count'=>$this->db->get()->row('count(*)'));
-        
-            
-		$this->db->where('term_taxonomy_id', $categoria);
-        $this->db->update('wp_term_taxonomy', $count);
+				
+				$this->db->where('term_taxonomy_id', $categoria);
+				$this->db->update('wp_term_taxonomy', $count);
+		}
 		
 		
 	}
